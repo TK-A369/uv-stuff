@@ -54,11 +54,13 @@ function VastOS:callService(serviceName, ...)
 	if service then
 		local handler = service.handler
 		if type(handler) == "function" then
-			handler(...)
+			return handler(...)
 		elseif type(handler) == "thread" then
+			local results = {}
 			while coroutine.status(handler) ~= "dead" do
-				coroutine.resume(handler, ...)
+				results = table.pack(coroutine.resume(handler, ...))
 			end
+			return table.unpack(results)
 		end
 	end
 end

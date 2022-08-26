@@ -21,6 +21,7 @@ vastOS:mkThread(
 		print("Thread 2b")
 		coroutine.yield()
 		print("Thread 2c")
+		print("Thread 2 reply from calling service: " .. vastOS:callService("testService", "Thread 2 calling service!"))
 	end),
 	1
 )
@@ -56,6 +57,11 @@ vastOS:subscribeToTopic("testTopic", function(data)
 end)
 
 vastOS:sendToTopic("testTopic", "I'm main program!")
+
+vastOS:registerService("testService", function(data)
+	print("Main program received service call with data: " .. data)
+	return "Some reply"
+end)
 
 while vastOS:tick() do
 end
