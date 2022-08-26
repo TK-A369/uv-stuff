@@ -1,6 +1,11 @@
 local VastOSCore = require("VastOSCore")
+local VastOSLogger = require("VastOSLogger")
 
 local vastOS = VastOSCore:new()
+
+local logger = VastOSLogger:new(vastOS)
+
+logger:print("Starting...")
 
 vastOS:mkThread(
 	coroutine.create(function()
@@ -8,6 +13,7 @@ vastOS:mkThread(
 			print("Thread 1 received data: " .. data)
 		end)
 		print("Thread 1")
+		logger:print("Thread 1 in log")
 	end),
 	1
 )
@@ -51,6 +57,8 @@ vastOS:mkThread(
 	end),
 	1
 )
+
+logger:print("Main program in log")
 
 vastOS:subscribeToTopic("testTopic", function(data)
 	print("Main program received data: " .. data)
