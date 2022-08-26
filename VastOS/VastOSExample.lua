@@ -20,9 +20,12 @@ vastOS:mkThread(coroutine.create(function()
 	print("Thread 3b")
 	print("Thread 3c")
 end))
-vastOS:mkThread(coroutine.create(function()
-	print("Thread 4")
-end))
+vastOS:mkThread(
+	coroutine.create(function()
+		print("Thread 4")
+	end),
+	10
+)
 
 while vastOS:tick() do
 end

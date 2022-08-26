@@ -21,7 +21,7 @@ function VastOS:tick()
 		local mostImportantThrId = -1
 		local mostImportantThrVal = -1
 		for k, v in ipairs(self.threads) do
-			local val = (self.counter - v.lastExec) * v.priority
+			local val = (self.counter - v.lastExec + 1) * v.priority
 			if val > mostImportantThrVal then
 				mostImportantThrVal = val
 				mostImportantThrId = k
