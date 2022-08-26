@@ -5,6 +5,7 @@ local VastOS = {
 	services = {},
 }
 
+--Create new VastOS instace.
 function VastOS:new(o)
 	o = o or {} -- create object if user does not provide one
 	setmetatable(o, self)
@@ -12,11 +13,13 @@ function VastOS:new(o)
 	return o
 end
 
+--Create new thread.
 function VastOS:mkThread(co, priority)
 	priority = priority or 1
 	table.insert(self.threads, { co = co, priority = priority, bonusPriority = 0, lastExec = self.counter })
 end
 
+--When data is sent to that topic, execute handler function or coroutine.
 function VastOS:subscribeToTopic(topicName, handler)
 	local topic = self.topics[topicName]
 	if topic then
@@ -27,6 +30,7 @@ function VastOS:subscribeToTopic(topicName, handler)
 	end
 end
 
+--Sends data to the given topic.
 function VastOS:sendToTopic(topicName, data)
 	local topic = self.topics[topicName]
 	if not topic then
@@ -44,11 +48,13 @@ function VastOS:sendToTopic(topicName, data)
 	end
 end
 
+--Create new service. When it's called, executes handler function or coroutine.
 function VastOS:registerService(serviceName, handler)
 	local service = { handler = handler }
 	self.services[serviceName] = service
 end
 
+--Call service (if it exists), and return its reply.
 function VastOS:callService(serviceName, ...)
 	local service = self.services[serviceName]
 	if service then
@@ -65,6 +71,7 @@ function VastOS:callService(serviceName, ...)
 	end
 end
 
+--This should be called continuously. This function resumes threads. Returns false when all threads terminated, otherwise true.
 function VastOS:tick()
 	local result = true
 	if #self.threads > 0 then

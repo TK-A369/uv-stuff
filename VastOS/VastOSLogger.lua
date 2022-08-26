@@ -3,6 +3,7 @@ local VastOSLogger = {
 	logTopicName = "Log",
 }
 
+--Create new logger instance in given VastOS instance, and in specific topic (defaults to "Log").
 function VastOSLogger:new(vastOSInstance, logTopicName, o)
 	o = o or {} -- create object if user does not provide one
 	setmetatable(o, self)
@@ -17,6 +18,7 @@ function VastOSLogger:new(vastOSInstance, logTopicName, o)
 	return o
 end
 
+--Send message to log topic.
 function VastOSLogger:print(msg)
 	self.vastOSInstance:sendToTopic(self.logTopicName, msg)
 end
