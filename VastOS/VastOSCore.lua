@@ -38,6 +38,7 @@ function VastOS:sendToTopic(topicName, data)
 		self.topics[topicName] = topic
 	end
 	for _, v in ipairs(topic.subscribers) do
+		print("Type of handler: " .. type(v))
 		if type(v) == "function" then
 			print("Invoking topic handler function!")
 			v(data)
