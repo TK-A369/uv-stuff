@@ -38,12 +38,9 @@ function VastOS:sendToTopic(topicName, data)
 		self.topics[topicName] = topic
 	end
 	for _, v in ipairs(topic.subscribers) do
-		print("Type of handler: " .. type(v))
 		if type(v) == "function" then
-			print("Invoking topic handler function!")
 			v(data)
 		elseif type(v) == "thread" then
-			print("Resuming topic handler coroutine!")
 			while coroutine.status(v) ~= "dead" do
 				coroutine.resume(v, data)
 			end
