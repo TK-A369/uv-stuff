@@ -1,19 +1,16 @@
-local VastOSLogger = {
-	vastOSInstance = nil,
-	logTopicName = "Log",
-}
+local VastOSLogger = {}
+VastOSLogger.__index = VastOSLogger
 
---Create new logger instance in given VastOS instance, and in specific topic (defaults to "Log").
-function VastOSLogger:new(vastOSInstance, logTopicName, o)
-	o = o or {} -- create object if user does not provide one
+--Create new logger instance in given VastOS instance, in specific topic (defaults to "Log"), with specific prefix (defaults to "Log: "), and specific log function (defaults to print).
+function VastOSLogger:new(vastOSInstance, logTopicName, logPrefix, logCallback)
+	local o = {}
 	setmetatable(o, self)
-	self.__index = self
-	self.vastOSInstance = vastOSInstance
-	if logTopicName then
-		self.logTopicName = logTopicName
-	end
-	vastOSInstance:subscribeToTopic(self.logTopicName, function(data)
-		print("Log: " .. data)
+	o.vastOSInstance = vastOSInstance
+	o.logTopicName = logTopicName or "Log"
+	o.logPrefix = logPrefix or "Log: "
+	o.logCallback = logCallback or print
+	vastOSInstance:subscribeToTopic(o.logTopicName, function(data)
+		o.logCallback(o.logPrefix .. data)
 	end)
 	return o
 end

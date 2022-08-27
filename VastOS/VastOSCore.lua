@@ -1,15 +1,14 @@
-local VastOS = {
-	counter = 0,
-	threads = {},
-	topics = {},
-	services = {},
-}
+local VastOS = {}
+VastOS.__index = VastOS
 
 --Create new VastOS instace.
-function VastOS:new(o)
-	o = o or {} -- create object if user does not provide one
+function VastOS:new()
+	local o = {}
 	setmetatable(o, self)
-	self.__index = self
+	o.counter = 0
+	o.threads = {}
+	o.topics = {}
+	o.services = {}
 	return o
 end
 
